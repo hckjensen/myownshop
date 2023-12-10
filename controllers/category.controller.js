@@ -32,8 +32,16 @@ export default class CategoryController {
 
             // Find all products where catergory_id in product table corresponds with id in category table
             const products = await Product.findAll({ where: { category_id: category.id } });
-            console.log(products);
-            if(products.length >= 0)
+            
+
+            // Checks if any products exist in category
+            if(products.length === 0) {
+                return res.status(400).json({
+                    message: 'No Products in this Category'
+                })
+            }  else {
+                res.json(products)
+            }
             
             res.json(products)
 
@@ -59,3 +67,5 @@ export default class CategoryController {
       };
 
 }; //Controller end
+
+
