@@ -6,7 +6,7 @@ export default class BrandController {
   getBrandList = async (req, res) => {
     try {
       const result = await Brand.findAll({
-        attributes: ['name']
+        attributes: ['id', 'name']
       });
       res.json(result);
     } catch (error) {

@@ -15,6 +15,14 @@ ProductCategory.init({
         allowNull: false,
         primaryKey: true
     },
+    product_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    category_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    }
     
     
 },
@@ -24,5 +32,7 @@ ProductCategory.init({
     underscored: true, // Brug underscores istedet for standarden CamelCase
     timestamps: false,
 });
+
+
 
 export default ProductCategory;

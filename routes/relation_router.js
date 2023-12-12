@@ -13,7 +13,12 @@ router.get('/relationships', (req, res) => {
 
 //CREATE PRODUCT & CATEGORY RELATIONS
 router.post('/relate', (req, res) => {
-    controller.createRelationship(req, res);
+    controller.addToCategory(req, res);
 });
+
+//REMOVE PRODUCT FROM CATEGORY
+router.delete('/relationships/:id([0-9]*)', (req, res) => {
+    controller.removeFromCategory(req, res);
+})
 
 export { router as ProductCategoryRouter }
