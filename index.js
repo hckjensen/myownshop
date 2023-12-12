@@ -6,11 +6,14 @@ import { UserRouter } from './routes/user.router.js';
 import { CategoryRouter } from './routes/category.router.js';
 import { ProductRouter } from './routes/product.router.js';
 
+import { ProductCategoryRouter } from './routes/relation_router.js';
+import { BrandRouter } from './routes/brandRouter.js';
+
 
 
 const app = express()
 app.use(express.urlencoded({ extended: true }));
-app.use(MainRouter, UserRouter, ProductRouter, CategoryRouter, sync)
+app.use(MainRouter, UserRouter, ProductRouter, CategoryRouter, BrandRouter, ProductCategoryRouter, sync)
 
 
 app.listen(process.env.PORT, () => {

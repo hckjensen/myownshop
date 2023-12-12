@@ -15,39 +15,6 @@ export default class CategoryController {
         
     }; //nav end
 
-    // GET all products in category
-
-    getProductByCategory = async (req, res) => {
-
-        try {
-            // Get category name from URL
-            const  categoryName  = req.params.name; 
-
-            //Finds category with name corresponding to value given in URL in the Category model
-            const category = await Category.findOne({ where: { name: categoryName}});
-            
-            if(!category){ // If provided name doesn't exist in database, return error and terminate function
-                return res.status(404).json({ error: "Category doesn't exist"}) 
-            }
-
-            // Find all products where catergory_id in product table corresponds with id in category table
-            const products = await Product.findAll({ where: { category_id: category.id } });
-            
-
-            // Checks if any products exist in category
-            if(products.length === 0) {
-                return res.status(400).json({
-                    message: 'No Products in this Category'
-                })
-            }  else {
-                res.json(products)
-            }
-            
-            res.json(products)
-
-        } catch {}
-    };
-
 
     createCategory = async (req, res) => {
         const { name } = req.body;

@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/install', async (req, res) => {
 	try {
-		await sequelize.sync()
+		await sequelize.sync({force: true})
 		res.sendStatus(200)
 	}
 	catch(err) {

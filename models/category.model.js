@@ -21,7 +21,8 @@ Category.init({
 }, {
     sequelize,
     tableName: 'categories',
-    underscored: true
+    underscored: true,
+    timestamps: false,
 });
 
 export default Category
