@@ -18,4 +18,9 @@ router.post('/category', (req, res) => {
     controller.createCategory(req, res);
 });
 
+//Update category
+router.put('/category', (req, res) => {
+    controller.updateCategory(req, res);
+});
+
 export { router as CategoryRouter }

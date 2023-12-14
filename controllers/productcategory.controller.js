@@ -10,7 +10,11 @@ export default class ProductCategoryController{
 
     getList = async (req, res) => {
         try {
-            const result = await ProductCategory.findAll()
+            const result = await ProductCategory.findAll({
+                order: [
+                    ['category_id', 'ASC']
+                ],
+            })
             res.json(result)
         } catch(error) {
             console.log(error)
