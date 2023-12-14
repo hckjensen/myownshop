@@ -38,6 +38,7 @@ const getProductByAttribute = async (
     if (attributeName == "brand") {
       products = await Product.findAll({
         where: { [`${attributeName}_id`]: attribute.id },
+        
       });
     } else if (attributeName == "category") {
       products = await ProductCategory.findAll({

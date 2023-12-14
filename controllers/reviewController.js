@@ -35,6 +35,60 @@ export default class ReviewController {
       }
   };
 
+
+  //Edit review
+  editReview = async (req, res) => {
+    const { id, comment, num_stars } = req.body;
+  
+    try {
+      // Find the review by ID
+      let review = await Review.findByPk(id);
+  
+      if (!review) {
+        return res.status(404).json({ error: 'Review not found' });
+      }
+  
+      // Construct the update object based on the provided parameters
+      const updateObject = {};
+      if (comment !== undefined && comment !== "") {
+         // Allows null to be entered in the form and thereby clearing the field
+         if (comment === "null") {
+            comment = null;
+          } else {
+            updateObject.comment = comment;
+          }
+        
+      }
+      if (num_stars !== undefined && num_stars !== "") {
+        // Allows null to be entered in the form and thereby clearing the field
+        if (num_stars === "null") {
+           num_stars = null;
+         } else {
+           updateObject.num_stars = num_stars;
+         }
+       
+     }
+  
+      // Update the review with the constructed object
+      const result = Review.update(updateObject, {
+        where: {id: id}
+      });
+  
+      
+  
+      res.json({
+        ReviewToUpdate: review,
+        UpdatedReview: updateObject
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
+
+
+
+
   //Product Reviews
   productReviews = async (req, res) => {
     const { identifier } = req.params;
@@ -62,10 +116,43 @@ export default class ReviewController {
     }
   };
 
+
+
+  //DELETE REVIEW FROM DATABASE
+  deleteReview = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      // Fetch the product details before deleting
+      const reviewToDelete = await Review.findOne({
+        where: { id: id },
+      });
+
+      if (!reviewToDelete) {
+        return res.status(404).send({
+          message: "Review not found",
+        });
+      };
+
+      await Review.destroy({
+        where: { id: id },
+      });
+      res.status(200).send({
+        message: "Review Deleted",
+        deletedProduct: reviewToDelete,
+      });
+    } catch (error) {
+      res.send(error);
+    };
+  };
+
+
+
+
   };
 
 
 
 
 
-;
+

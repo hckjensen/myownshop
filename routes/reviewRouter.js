@@ -10,8 +10,16 @@ router.post('/review', (req, res) => {
     controller.createReview(req, res);
 });
 
+router.put('/review', (req, res) => {
+    controller.editReview(req, res)
+});
+
 router.get('/product/:identifier/reviews', (req, res) => {
     controller.productReviews(req, res);
+});
+
+router.delete('/review', (req, res) => {
+    controller.deleteReview(req, res);
 });
 
 

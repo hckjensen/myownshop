@@ -26,7 +26,7 @@ export default class CategoryController {
         const result = await Category.create(req.body);
         res.json({
           message: "Category created",
-          new_id: result.id,
+          result
         });
       } catch (error) {
         res.send(error);

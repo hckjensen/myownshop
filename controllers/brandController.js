@@ -9,6 +9,7 @@ export default class BrandController {
     try {
       const result = await Brand.findAll({
         attributes: ["id", "name"],
+        order: [ "id", "ASC"]
       });
       res.json(result);
     } catch (error) {
