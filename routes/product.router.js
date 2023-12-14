@@ -9,7 +9,12 @@ const controller = new ProductController()
 // GET LIST OF ALL PRODUCTS
 router.get('/products', (req, res) => {
     controller.getProductList(req, res)
-})
+});
+
+// Product details
+router.get('/product/:identifier', (req, res) => {
+    controller.productDetails(req, res);
+  });
 
 
 // Get products of a given category

@@ -59,4 +59,39 @@ export default class CategoryController {
       }
     }
   };
-} //Controller end
+
+
+  removeCategory = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      // Fetch the product details before deleting
+      const categoryToDelete = await Category.findOne({
+        where: { id: id },
+      });
+
+      if (!categoryToDelete) {
+        return res.status(404).send({
+          message: "Category not found",
+        });
+      };
+
+      await Category.destroy({
+        where: { id: id },
+      });
+      res.status(200).send({
+        message: "Category Removed From Database",
+        deletedCategory: categoryToDelete,
+      });
+    } catch (error) {
+      res.send(error);
+    };
+
+
+  };
+
+
+
+
+
+}; //Controller end

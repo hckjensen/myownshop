@@ -13,7 +13,9 @@ export default class UserController {
   //GET ALL USERS
   list = async (req, res) => {
     try {
-      const result = await User.findAll();
+      const result = await User.findAll({
+        attributes: ['id', 'first_name', 'last_name', 'email']
+      });
       res.json(result);
     } catch (error) {
       res.send(error);
@@ -63,15 +65,17 @@ export default class UserController {
 
       res.json({
         message: "User Successfully Created",
-        new_id: result.id,
+        userObject
       });
-    } catch (error) { //runs if wrong DATATYPE is entered in the form body. i.e invalid date of birth or text entered in interger field, etc.
+    } catch (error) { 
+      //If Statement to check if Email is already in use
       if (error.name === 'SequelizeUniqueConstraintError') {
-        return res.status(400).json({ error: 'User Already Exists' });
+        return res.status(400).json({ error: 'User Already Exists' }); 
     }
       console.error("Error creating user:", error);
+      //runs if wrong DATATYPE is entered in the form body. i.e invalid date of birth or text entered in interger field, etc.
       res.status(500).json({
-        message: "Internal Server Error",
+        message: "Internal Server Error", 
       });
     }
   }; //create function end
@@ -87,12 +91,17 @@ export default class UserController {
       
     } = req.body;
 
-    const userObject = {};
+    const userObject = await User.findOne({
+      where: { id: id }
+    });
+
+
+    const updatedUserObject = {};
     for (const param of userParams) { // loops through each array item
       if (  req.body[param] !== undefined &&
             req.body[param] !== null &&
             req.body[param] !== "") { // Only updates entered values. If values are as stated, they're send to the userObject, which is then called in the User.update in the try/catch statement
-        userObject[param] = req.body[param]; // sets the param of given iteration as userObject param
+        updatedUserObject[param] = req.body[param]; // sets the param of given iteration as userObject param
       };
     };
 
@@ -104,12 +113,13 @@ export default class UserController {
       };
       
     try { 
-      const result = await User.update(userObject, {
+      const result = await User.update(updatedUserObject, {
         where: { id: id }
       });
       res.json({
         message: "User Updated",
-        updatedValues: userObject,
+        oldValues: userObject,
+        updatedValues: updatedUserObject,
       });
     } catch (error) { //runs if wrong DATATYPE is entered in the form body. i.e invalid date of birth or text entered in interger field, etc.
       console.error("Error creating user:", error);

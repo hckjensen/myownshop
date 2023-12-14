@@ -23,4 +23,9 @@ router.put('/category', (req, res) => {
     controller.updateCategory(req, res);
 });
 
+//Update category
+router.delete('/category/:id([0-9]*)', (req, res) => {
+    controller.removeCategory(req, res);
+});
+
 export { router as CategoryRouter }

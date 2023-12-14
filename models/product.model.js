@@ -4,6 +4,7 @@ import Image from "./image.model.js";
 import Brand from "./brand.model.js";
 import Category from "./category.model.js";
 import ProductCategory from "./ProductCategory.js";
+import Review from "./reviews.model.js";
 
 class Product extends Model {}
 
@@ -64,6 +65,7 @@ Product.init(
 // });
 
 Product.hasMany(Image, { as: "images", foreignKey: "product_id" });
+Product.hasMany(Review, { foreignKey: 'product_id', as: 'reviews' });
 Product.belongsTo(Brand, { foreignKey: "brand_id", as: "brand" });
 Product.belongsToMany(Category, {
   through: {

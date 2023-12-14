@@ -18,7 +18,9 @@ router.post('/brand', (req, res) => {
 
 
 //UPDATE BRAND
-
+router.put('/brand', (req, res) => {
+    controller.updateBrand(req, res);
+});
 
 //delete brand
 router.delete('/brand/:id([0-9]*)', (req, res) => {

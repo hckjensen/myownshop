@@ -2,6 +2,8 @@ import Product from "../models/product.model.js";
 import Brand from "../models/brand.model.js";
 import Category from "../models/category.model.js";
 import ProductCategory from "../models/ProductCategory.js";
+import Review from "../models/reviews.model.js";
+import User from "../models/user.model.js";
 
 const productParams = [
   "name",
@@ -68,7 +70,7 @@ export default class ProductController {
   getProductList = async (req, res) => {
     try {
       const result = await Product.findAll({
-        attributes: ["id", "name", "price", "stock", "brand_id"],
+        attributes: ["id", "name", "price",],
         include: {
           model: Brand,
           attributes: ["name"],
@@ -106,6 +108,59 @@ export default class ProductController {
     );
   };
 
+
+
+  // GET PRODUCT DETAILS
+productDetails = async (req, res) => {
+  const { identifier } = req.params;
+  
+
+  try {
+    const result = isNaN(identifier)
+      ? await Product.findOne({ where: { name: identifier }, 
+        include: {
+        model: Brand,
+        attributes: ["name"],
+        as: "brand",
+      },
+      include: {
+        model: Review,
+        attributes: ["user_Id", "num_stars", "comment"],
+        as: "reviews",
+        
+      }
+
+     })
+      : await Product.findByPk(identifier, {
+        include: {
+          model: Brand,
+          attributes: ["name"],
+          as: "brand",
+        },
+        include: {
+          model: Review,
+          attributes: ["user_Id", "num_stars", "comment"],
+          as: "reviews",
+          
+        }
+      });
+      
+
+    if (!result) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
+
+
+
   //CREATE PRODUCT
   createProduct = async (req, res) => {
     const { name, price, description, stock, brand_id, image_url } = req.body;
@@ -127,7 +182,7 @@ export default class ProductController {
 
         res.json({
           message: "Product Added To Database",
-          new_id: result.id,
+          result
         });
       } else {
         res.status(400).json({
